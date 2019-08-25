@@ -1,5 +1,5 @@
 <template>
-  <el-input v-on="$listeners" v-bind="$attrs"  v-model="value_" ></el-input>
+  <el-input v-on="$listeners" v-bind="$attrs"  v-model="value" ></el-input>
 </template>
 
 <script>

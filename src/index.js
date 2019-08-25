@@ -14,11 +14,11 @@ import {
 import FilterPanel from "./filterPanel/index.js"
 
 import defaultC from "./editCell/default.vue"
-// import selection from "./editCell/selection.vue"
+import selection from "./editCell/selection.vue"
 
 const editComponents = {
     default: defaultC,
-    // selection: selection
+    selection: selection
 }
 
 
@@ -53,7 +53,7 @@ export default {
                                 }
                             }, [(col.label || col.prop),
                                 (function () {
-                                    if (_this.tableConfig.filter === false || col.filter === false) return;
+                                    if (_this.tableConfig.filter === false || col.filter !== true) return;
 
                                     return h('transition', {
                                         attrs: {
@@ -104,7 +104,7 @@ export default {
                                         ...col.editAttrs
                                     },
                                     props: {
-                                        value: row[col.prop],
+                                        value_: row[col.prop],
                                         column: column,
                                         columnObj: col,
                                         row: row
@@ -218,6 +218,9 @@ export default {
                 ...this.$listeners,
                 ...this.eListeners
             },
+            directives: this.tableConfig.scroll === true ? [{
+                name: 'autoScroll'
+            }] : null,
             scopedSlots: {
                 empty: function () {
                     return _this.$slots.empty
@@ -240,7 +243,8 @@ export default {
             return {
                 'cell-click': this.cellClick,
                 'row-click': this.rowClick,
-                'selection-change': this.selectionChange
+                'selection-change': this.selectionChange,
+                'sort-change': this.sortChange
             }
         },
         hasLeftFixed() {
@@ -270,10 +274,75 @@ export default {
                     Element.focus()
                 }
             }
+        },
+        autoScroll: {
+            componentUpdated(el) {
+                let warp = el.querySelector('.el-table__body-wrapper'),
+                    body = warp.querySelector('.el-table__body'),
+                    timer = null;
+                warp.addEventListener("DOMMouseScroll", wheel, false);
+                warp.onmousewheel = wheel
+
+                function wheel(event) {
+                    let e = event || window.event,
+                        H = warp.clientHeight,
+                        bH = body.clientHeight,
+                        W = warp.clientWidth,
+                        bW = body.clientWidth,
+                        delta = 0;
+                    if (W >= bW) return;
+                    if (e.wheelDelta) {
+                        delta = e.wheelDelta / 120;
+                    } else if (e.detail) {
+                        delta = -e.detail / 3;
+                    }
+                    if (delta > 0) { // up
+                        if (warp.scrollLeft > 0) {
+                            e.preventDefault();
+                            let t = 0;
+                            timer ? clearInterval(timer) : null;
+                            timer = setInterval(() => {
+                                warp.scrollLeft -= 5;
+                                t += 1;
+                                if (t >= 150) {
+                                    clearInterval(timer);
+                                }
+                            }, 1)
+                        }
+                    } else { // down
+                        if (H >= bH || H + warp.scrollTop == bH) {
+                            e.preventDefault();
+                            let t = 0;
+                            timer ? clearInterval(timer) : null;
+                            timer = setInterval(() => {
+                                warp.scrollLeft += 5;
+                                t += 1;
+                                if (t >= 150) {
+                                    clearInterval(timer);
+                                }
+                            }, 1)
+                        }
+                    }
+                }
+            }
         }
     },
 
     methods: {
+        sortChange({
+            column,
+            prop,
+            order
+        }) {
+            let colKey = column.columnKey || column.property || column.id
+            this.closeFilterPanel(colKey);
+            this.$emit('sort-change', {
+                column,
+                prop,
+                order
+            })
+        },
+
         rowClick(row, column, event) {
             this.$emit('row-click', row, column, event)
             if (hasOwn(this.$attrs, 'highlight-current-row') ||
@@ -345,7 +414,7 @@ export default {
         cellClick(row, column, cell, event) {
             this.$emit('cell-click', row, column, event)
             if (!this.isEditCell(row, column)) {
-                this.cancelEdit();
+                // this.cancelEdit();
                 return
             }
             event.stopPropagation();
@@ -415,7 +484,7 @@ export default {
                     filtersData = (await columnObj.getFilters(columnObj, column)) || []
                 } else if (this.getFilters) {
                     filtersData = (await this.getFilters(columnObj, column)) || []
-                } 
+                }
             } catch (error) {
                 this.filterLoads.splice(this.filterLoads.findIndex(fd => fd === colKey), 1)
                 console.error(`[ETable warn]${error}`)
@@ -490,6 +559,31 @@ export default {
             if (key == 16 || key == 18) this.shiftOrAltDown = false;
         },
 
+        attrsFilter() {
+            for (let c = 0; c < this.columns.length; c++) {
+                this.traversalCol(this.columns[c]);
+            }
+        },
+        traversalCol(c) {
+            if (!hasOwn(c, "childrens") || !Array.isArray(c["childrens"])) {
+                //filter header init
+                if (!c.defaultHeader) {
+                    let filName = ["filters"];
+                    filName.forEach(f => {
+                        if (hasOwn(c, f)) {
+                            delete c[f];
+                        }
+                    });
+                }
+            } else {
+                if (Array.isArray(c["childrens"]) && c["childrens"].length > 0) {
+                    for (let cc = 0; cc < c.childrens.length; cc++) {
+                        this.traversalCol(c.childrens[cc]);
+                    }
+                }
+            }
+        },
+
         /**Methods */
         closeFilterPanel(key) {
             if (hasOwn(this.filterPanels, key)) {
@@ -502,7 +596,7 @@ export default {
             if (hasOwn(this.filtedList, key)) {
                 this.$delete(this.filtedList, key);
                 callback(true)
-                return 
+                return
             }
             callback(false)
         },
@@ -513,6 +607,7 @@ export default {
 
     created() {
         this.tableConfig = mergeOptions(this.tableConfig, this.config);
+        this.attrsFilter();
     },
 
     mounted() {
@@ -535,7 +630,9 @@ export default {
     props: {
         columns: {
             type: Array,
-            required: true
+            default: function () {
+                return []
+            }
         },
         config: Object,
         rowStyle: Function,
@@ -562,6 +659,19 @@ export default {
                 index: true,
                 selection: true,
             }
+        }
+    },
+
+    watch: {
+        editX(n) {
+            if (n !== null) {
+                window.addEventListener('click', this.cancelEdit)
+            } else {
+                window.removeEventListener('click', this.cancelEdit)
+            }
+        },
+        "$attrs.data": function (n) {
+            this.editMap = []
         }
     }
 

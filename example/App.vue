@@ -30,6 +30,7 @@
       height="100%"
       :getFilters="getFilters"
       @e-filter-change="eFilterChange"
+      v-loading="loading"
     ></e-table>
   </div>
 </template>
@@ -37,77 +38,69 @@
 <script>
 import ETable from "@/index.js";
 import req from "@utils/request.js";
+import customCellInput from "./components/customCellInput.vue";
 import { isFunction } from "@utils/index.js";
 export default {
   name: "app",
   data() {
     return {
+      loading: false,
       tableData: [],
       columns: [
         {
           prop: "name",
-          label: "名字",
-
-          // "column-key": "name",
-          width: 220,
-          // type:'expand',
-          // renderHeader:(h,{column,$index})=>{
-          //   console.log(column,$index)
-          // },
+          label: "名字 [自定义内容]",
+          width: 170,
           renderCell: (h, { value, row, column }) => {
             return h(
               "el-button",
               {
-                props: { size: "small", type: "info" },
+                props: { size: "small", type: value.length>2?"success":'danger' },
                 on: {
                   click: e => {
                     console.log(e, value);
                   }
                 }
               },
-              value + " [ Custom renderCell ]"
+              value
             );
           }
         },
-        // {
-        //   name: "contoty",
-        //   label: "中国",
-        //   columnChild: [
         {
-          prop: "city",
-          label: "城市",
-          width: 250,
-          edit: true,
-          editControl: (v, r, c) => {
-            if (r.sex) {
-              return false;
+          prop: "china",
+          label: "中国 [多级表头]",
+          childrens: [
+            {
+              label: "省份",
+              childrens: [
+                {
+                  prop: "city",
+                  label: "城市 [控制编辑单元]",
+                  filter: true,
+                  width: 250,
+                  edit: true,
+                  editControl: (v, r, c) => {
+                    if (r.sex) {
+                      return false;
+                    }
+                    return true;
+                  }
+                }
+              ]
+            },
+            {
+              prop: "address",
+              label: "地址",
+              width: 250
             }
-            return true;
-          }
-          // editType: "selection",
-          // editAttrs: {
-          //   size: "mini",
-          //   // clearable:true,
-          //   options: [
-          //     { value: "石家庄", label: "石家庄" },
-          //     { value: "湖南", label: "湖南" },
-          //     { value: "北京", label: "北京" }
-          //   ]
-          // },
-          // editListeners: {
-          //   //change 事件被覆盖为 cell-value-change 事件
-          //   focus: event => {
-          //     console.log("cellEdit-change", event);
-          //   }
-          // }
+          ]
         },
-        //   ]
-        // },
         {
           prop: "datetime",
-          label: "时间",
+          label: "时间 [日期过滤]",
           // "column-key": "date",
-          width: 250,
+          width: 200,
+          filter: true,
           filterType: "datePicker",
           filterAttrs: {
             "value-format": "yyyy/MM/dd"
@@ -120,48 +113,72 @@ export default {
         },
         {
           prop: "email",
-          label: "邮件",
-          width: 250,
-          filterType: "single"
+          label: "邮件 [下拉选择编辑]",
+          sortable: true,
+          filter: true,
+          width: 230,
+          filterType: "single",
+          edit: true,
+          editType: "selection", //下拉选择编辑组件
+          editAttrs: {
+            size: "mini",
+            // clearable:true,
+            options: [
+              { value: "石家庄", label: "石家庄" },
+              { value: "湖南", label: "湖南" },
+              { value: "北京", label: "北京" }
+            ]
+          },
+          editListeners: {
+            //change 事件被覆盖为 cell-value-change 事件
+            focus: event => {
+              console.log("cellEdit-change", event);
+            }
+          }
         },
         {
           prop: "tel",
           label: "电话[ 默认header ]",
-          width: 250,
-          defaultHeader: true
-          // filters: [
-          //   { value: "1111", text: "136788" },
-          //   { value: "232131", text: "2123213131" },
-          //   { value: "7332324", text: "123112321321" }
-          // ],
+          width: 200,
+          defaultHeader: true,
+          filters: [
+            { value: "1111", text: "136788" },
+            { value: "232131", text: "2123213131" },
+            { value: "7332324", text: "123112321321" }
+          ],
           // filterMultiple: false,
-          // filterPlacement: "bottom"
+          filterPlacement: "bottom",
+          sortable: true
         },
         {
           prop: "sex",
-          label: "性别",
-          width: 120,
+          label: "性别 [格式化显示]",
+          width: 150,
           formatter: v => {
             return v
               ? "<span style='color:blue'>男</span>"
               : "<span style='color:red'>女</span>";
           }
         },
-        {
-          prop: "address",
-          label: "地址",
-          width: 250
-        },
+
         {
           prop: "companyName",
-          label: "公司名称",
-          width: 150
-          //edit: true,
-          // editComponent: customInputVue,
-          // editAttrs: {
-          //   size: "mini",
-          //   filterable: true
-          // }
+          label: "公司名称 [自定义编辑组件]",
+          width: 250,
+          filter: true,
+          edit: true,
+          editComponent: customCellInput, //自定义编辑组件
+          editAttrs: {
+            //编辑表格绑定数据
+            size: "mini"
+          },
+          editListeners: {
+            //编辑表格事件
+            //change:e=>{}, 无效  被覆盖为cell-value-change的table事件
+            focus: e => {
+              console.log(e, "ss");
+            }
+          }
         },
         {
           prop: "bool",
@@ -171,7 +188,9 @@ export default {
       ],
       config: {
         index: { align: "center" },
-        selection: false
+        selection: true
+        // filter:false,
+        // scroll:true,
       },
       getFilters: function(col, column) {
         return new Promise((resolve, reject) => {
@@ -205,8 +224,10 @@ export default {
     eFilterChange(value, column, filtedList) {
       this.filtedList = filtedList;
       console.log(value, column.property, filtedList);
+      this.getData();
     },
     getData() {
+      this.loading = true;
       let data = {
         pageIndex: 1,
         pageSize: 100
@@ -217,6 +238,7 @@ export default {
         data
       }).then(res => {
         this.tableData = res.rows;
+        this.loading = false;
       });
     },
     clearFilter(key) {
@@ -224,11 +246,13 @@ export default {
         console.log("clear-filter", res);
       });
       this.filtedList = this.$refs.table.filtedList;
+      this.getData();
     },
 
     clearAllFilter() {
       this.$refs.table.clearAllFiltedColumn();
       this.filtedList = this.$refs.table.filtedList;
+      this.getData();
     },
 
     formatFiltedVlue(v, colObj) {

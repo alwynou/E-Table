@@ -1,17 +1,17 @@
 export default {
     props: {
-        value: [String, Number],
+        value_: [String, Number],
         column: Object,
         row: Object,
         columnObj: Object
     },
     computed: {
-        value_: {
+        value: {
             get() {
-                return this.value;
+                return this.value_;
             },
             set(n) {
-                this.$emit('setCellValue', n)
+                this.$emit('setValue', n)
             }
         }
     }

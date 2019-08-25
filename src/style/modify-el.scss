@@ -8,15 +8,6 @@ $hover-bgc: #f5f7fa;
   &.el-table thead.is-group th {
     background-color: $head-bgc;
   }
-  &.el-table .e-custom-header+.caret-wrapper{
-   opacity: 0;
-  }
-  &.el-table .ascending .e-custom-header+.caret-wrapper{
-    opacity:1;
-  }
-  &.el-table .descending .e-custom-header+.caret-wrapper{
-    opacity:1;
-  }
   
   // hover||active
 
