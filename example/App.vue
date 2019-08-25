@@ -1,0 +1,353 @@
+<template>
+  <div id="app">
+    <ul class="e-filted-list" v-if="filteds.length>0">
+      <li
+        class="filted-item"
+        v-for="fed in filteds"
+        :key="fed.key"
+        @click.stop="clearFilter(fed.key)"
+      >
+        <b>{{fed.columnObj.label}}:</b>
+        <div v-for="(fedItem,i) in fed.value" :key="i">
+          <span v-html="formatFiltedVlue(fedItem,fed.columnObj)"></span>
+          <em>{{i!==fed.value.length-1?',':''}}</em>
+        </div>
+      </li>
+      <li class="clear-all" @click.stop="clearAllFilter">
+        <span>清除所有</span>
+      </li>
+    </ul>
+    <div class="nodata" v-if="filteds.length==0">
+      <h3>无筛选过滤条件</h3>
+    </div>
+    <e-table
+      ref="table"
+      :data="tableData"
+      :columns="columns"
+      :config="config"
+      stripe
+      border
+      height="100%"
+      :getFilters="getFilters"
+      @e-filter-change="eFilterChange"
+    ></e-table>
+  </div>
+</template>
+
+<script>
+import ETable from "@/index.js";
+import req from "@utils/request.js";
+import { isFunction } from "@utils/index.js";
+export default {
+  name: "app",
+  data() {
+    return {
+      tableData: [],
+      columns: [
+        {
+          prop: "name",
+          label: "名字",
+
+          // "column-key": "name",
+          width: 220,
+          // type:'expand',
+          // renderHeader:(h,{column,$index})=>{
+          //   console.log(column,$index)
+          // },
+          renderCell: (h, { value, row, column }) => {
+            return h(
+              "el-button",
+              {
+                props: { size: "small", type: "info" },
+                on: {
+                  click: e => {
+                    console.log(e, value);
+                  }
+                }
+              },
+              value + " [ Custom renderCell ]"
+            );
+          }
+        },
+        // {
+        //   name: "contoty",
+        //   label: "中国",
+        //   columnChild: [
+        {
+          prop: "city",
+          label: "城市",
+          width: 250,
+          edit: true,
+          editControl: (v, r, c) => {
+            if (r.sex) {
+              return false;
+            }
+            return true;
+          }
+          // editType: "selection",
+          // editAttrs: {
+          //   size: "mini",
+          //   // clearable:true,
+          //   options: [
+          //     { value: "石家庄", label: "石家庄" },
+          //     { value: "湖南", label: "湖南" },
+          //     { value: "北京", label: "北京" }
+          //   ]
+          // },
+          // editListeners: {
+          //   //change 事件被覆盖为 cell-value-change 事件
+          //   focus: event => {
+          //     console.log("cellEdit-change", event);
+          //   }
+          // }
+        },
+        //   ]
+        // },
+        {
+          prop: "datetime",
+          label: "时间",
+          // "column-key": "date",
+          width: 250,
+          filterType: "datePicker",
+          filterAttrs: {
+            "value-format": "yyyy/MM/dd"
+          },
+          filterListeners: {
+            change: e => {
+              console.log("[Data filter change] filterValue:", e);
+            }
+          }
+        },
+        {
+          prop: "email",
+          label: "邮件",
+          width: 250,
+          filterType: "single"
+        },
+        {
+          prop: "tel",
+          label: "电话[ 默认header ]",
+          width: 250,
+          defaultHeader: true
+          // filters: [
+          //   { value: "1111", text: "136788" },
+          //   { value: "232131", text: "2123213131" },
+          //   { value: "7332324", text: "123112321321" }
+          // ],
+          // filterMultiple: false,
+          // filterPlacement: "bottom"
+        },
+        {
+          prop: "sex",
+          label: "性别",
+          width: 120,
+          formatter: v => {
+            return v
+              ? "<span style='color:blue'>男</span>"
+              : "<span style='color:red'>女</span>";
+          }
+        },
+        {
+          prop: "address",
+          label: "地址",
+          width: 250
+        },
+        {
+          prop: "companyName",
+          label: "公司名称",
+          width: 150
+          //edit: true,
+          // editComponent: customInputVue,
+          // editAttrs: {
+          //   size: "mini",
+          //   filterable: true
+          // }
+        },
+        {
+          prop: "bool",
+          label: "布尔值",
+          width: 120
+        }
+      ],
+      config: {
+        index: { align: "center" },
+        selection: false
+      },
+      getFilters: function(col, column) {
+        return new Promise((resolve, reject) => {
+          let data = { column: col.prop };
+          req({
+            url: "/filter",
+            method: "post",
+            data
+          })
+            .then(res => {
+              resolve(res.data);
+            })
+            .catch(error => {
+              reject(error);
+            });
+        });
+      },
+      filtedList: {}
+    };
+  },
+  computed: {
+    filteds() {
+      let fileds = [];
+      for (let f in this.filtedList) {
+        fileds.push(this.filtedList[f]);
+      }
+      return fileds;
+    }
+  },
+  methods: {
+    eFilterChange(value, column, filtedList) {
+      this.filtedList = filtedList;
+      console.log(value, column.property, filtedList);
+    },
+    getData() {
+      let data = {
+        pageIndex: 1,
+        pageSize: 100
+      };
+      req({
+        url: "/Getlist",
+        method: "post",
+        data
+      }).then(res => {
+        this.tableData = res.rows;
+      });
+    },
+    clearFilter(key) {
+      this.$refs.table.clearFiltedColumn(key, function(res) {
+        console.log("clear-filter", res);
+      });
+      this.filtedList = this.$refs.table.filtedList;
+    },
+
+    clearAllFilter() {
+      this.$refs.table.clearAllFiltedColumn();
+      this.filtedList = this.$refs.table.filtedList;
+    },
+
+    formatFiltedVlue(v, colObj) {
+      if (v === "fullSelect") {
+        return "全选";
+      }
+      if (isFunction(colObj.formatter)) {
+        return colObj.formatter(v);
+      }
+
+      return v;
+    }
+  },
+
+  mounted() {
+    this.getData();
+  },
+  components: {
+    ETable
+  }
+};
+</script>
+
+<style lang="scss">
+* {
+  box-sizing: border-box;
+}
+
+html,
+body {
+  margin: 0;
+  padding: 0;
+  height: 100%;
+}
+#app {
+  font-family: "Avenir", Helvetica, Arial, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-align: center;
+  color: #2c3e50;
+  height: 100%;
+  overflow: hidden;
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  .e-table {
+    flex: 1 1 auto;
+  }
+  .nodata {
+    display: flex;
+    justify-content: center;
+    padding-bottom: 20px;
+    h3 {
+      margin: 0;
+      padding: 0;
+      color: gray;
+    }
+  }
+  .e-filted-list {
+    list-style: none;
+    display: flex;
+    align-items: flex-start;
+    flex-wrap: wrap;
+    justify-content: flex-start;
+    margin: 0px;
+    padding: 3px 10px;
+    max-height: 80px;
+    padding-bottom: 20px;
+    overflow: auto;
+    li {
+      position: relative;
+      margin-right: 5px;
+      margin-bottom: 5px;
+      font-size: 12px;
+      display: inline-block;
+      align-items: center;
+      border-radius: 4px;
+      padding: 3px 5px;
+      border: 1px solid #ccc;
+      overflow: hidden;
+      white-space: nowrap;
+      text-overflow: ellipsis;
+      color: $title-color;
+      transition: all 0.3s ease-in-out;
+      div {
+        display: inline;
+      }
+      b {
+        padding-right: 3px;
+      }
+      &.filted-item:hover {
+        cursor: pointer;
+        &::before {
+          opacity: 1;
+          transform: translateX(0);
+        }
+      }
+      &.filted-item::before {
+        content: "Delete";
+        position: absolute;
+        color: #fff;
+        background-color: rgba($color: $danger-color, $alpha: 0.8);
+        left: 0;
+        right: 0;
+        bottom: 0;
+        top: 0;
+        opacity: 0;
+        line-height: 22px;
+        text-align: center;
+        transform: translateX(100%);
+        transition: all 0.3s ease-in-out;
+      }
+    }
+    .clear-all {
+      background-color: $danger-color;
+      border-color: $danger-color;
+      color: #fff;
+      cursor: pointer;
+    }
+  }
+}
+</style>

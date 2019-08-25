@@ -1,0 +1,85 @@
+$default-bgc: #f5f7fa;
+
+$hover-bgc: #f5f7fa;
+
+.e-table {
+  //header
+  &.el-table thead th,
+  &.el-table thead.is-group th {
+    background-color: $head-bgc;
+  }
+  &.el-table .e-custom-header+.caret-wrapper{
+   opacity: 0;
+  }
+  &.el-table .ascending .e-custom-header+.caret-wrapper{
+    opacity:1;
+  }
+  &.el-table .descending .e-custom-header+.caret-wrapper{
+    opacity:1;
+  }
+  
+  // hover||active
+
+  &.el-table--striped .el-table__body tr.el-table__row--striped td{
+    &.edit-cell {
+        background-color: $editCell-color;
+        &.edit-active {
+          background-color: $withe;
+        }
+      }
+  }
+
+  .el-table__body tr.current-row>td{
+    &.edit-cell {
+        background-color: $editCell-color;
+        &.edit-active {
+          background-color: $withe;
+        }
+      }
+  }
+
+  &.el-table--enable-row-hover .el-table__body tr:hover > td {
+    &.edit-cell {
+      background-color: $editCell-color;
+      &.edit-active {
+        background-color: $withe;
+      }
+    }
+    background-color: $hover-bgc;
+  }
+
+  .el-table__body tr.hover-row.current-row > td,
+  .el-table__body tr.hover-row.el-table__row--striped.current-row > td,
+  .el-table__body tr.hover-row.el-table__row--striped > td,
+  .el-table__body tr.hover-row > td {
+    &.edit-cell {
+      background-color: $editCell-color;
+      &.edit-active {
+        background-color: $withe;
+      }
+    }
+    background-color: $hover-bgc;
+  }
+
+
+  .el-table__body tr.current-row>td{
+    background-color: $current-color;
+  }
+}
+
+//filter
+.e-popover.el-popover {
+  min-width: 0px;
+  padding: 0px;
+  overflow: hidden;
+  .e-table-filter {
+    &.el-table-filter {
+      box-shadow: none;
+      margin: 10px;
+      border: 0px;
+    }
+  }
+  .el-table-filter{
+    border: 0px;
+  }
+}
