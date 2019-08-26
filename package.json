@@ -4,7 +4,7 @@
   "private": true,
   "scripts": {
     "serve": "vue-cli-service serve",
-    "dist":"vue-cli-service build",
+    "dist":"vue-cli-service build --dest docs",
     "build": "vue-cli-service build --target lib --name e-table --dest lib src/index.js",
     "lint": "vue-cli-service lint"
   },

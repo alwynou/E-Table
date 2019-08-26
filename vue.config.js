@@ -5,7 +5,7 @@ function resolve(url) {
 }
 
 module.exports = {
-    publicPath:'./',
+    publicPath: './',
 
     lintOnSave: false,
 
@@ -20,7 +20,17 @@ module.exports = {
     chainWebpack: config => {
         config.resolve.alias
             .set('@', resolve('src'))
-            .set('@utils', resolve('src/utils'))
+            .set('@utils', resolve('src/utils'));
+    },
+
+    configureWebpack: config => {
+        if (process.env.NODE_ENV === 'production') {
+            config.externals = {
+                'vue': 'Vue',
+                'axios': 'axios',
+                'element-ui':'element-ui'
+            }
+        }
     },
 
     css: {
