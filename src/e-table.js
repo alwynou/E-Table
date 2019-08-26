@@ -335,6 +335,7 @@ export default {
         }) {
             let colKey = column.columnKey || column.property || column.id
             this.closeFilterPanel(colKey);
+            this.editMap = [];
             this.$emit('sort-change', {
                 column,
                 prop,
