@@ -31,7 +31,16 @@
       :getFilters="getFilters"
       @e-filter-change="eFilterChange"
       v-loading="loading"
-    ></e-table>
+    >
+    <!-- el-table所有插槽功能依然保存-->
+    <el-table-column label="slot">
+      <template v-slot:default="{row}">
+        <el-tag size="small">
+          {{row.name}}
+        </el-tag>
+      </template>
+    </el-table-column>
+    </e-table>
   </div>
 </template>
 
