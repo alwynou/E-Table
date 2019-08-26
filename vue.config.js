@@ -28,7 +28,7 @@ module.exports = {
             config.externals = {
                 'vue': 'Vue',
                 'axios': 'axios',
-                'element-ui':'element-ui'
+                'element-ui': 'element-ui'
             }
         }
     },

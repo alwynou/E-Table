@@ -112,10 +112,8 @@ export default {
                                     },
                                     on: {
                                         ...col.editListeners,
-                                        setValue: (v) => {
-                                            row[col.prop] = v
-                                        },
                                         change: (v) => {
+                                            row[col.prop] = v
                                             _this.$emit('cell-value-change', v, row, column, col)
                                         }
                                     },

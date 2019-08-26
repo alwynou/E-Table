@@ -177,17 +177,17 @@ export default {
           filter: true,
           edit: true,
           editComponent: customCellInput, //自定义编辑组件
-          editAttrs: {
-            //编辑表格绑定数据
-            size: "mini"
-          },
-          editListeners: {
-            //编辑表格事件
-            //change:e=>{}, 无效  被覆盖为cell-value-change的table事件
-            focus: e => {
-              console.log(e, "ss");
-            }
-          }
+          // editAttrs: {
+          //   //编辑表格绑定数据
+          //   size: "mini"
+          // },
+          // editListeners: {
+          //   //编辑表格事件
+          //   //change:e=>{}, 无效  被覆盖为cell-value-change的table事件
+          //   focus: e => {
+          //     console.log(e, "ss");
+          //   }
+          // }
         },
         {
           prop: "bool",

@@ -1,6 +1,6 @@
 <template>
   <div class="el-table-filter e-table-filter">
-    <div class="e-filter-search" v-if="filters.length>10&&!isFilted">
+    <div class="e-filter-search" v-if="filters.length>5&&!isFilted">
       <el-input
         size="mini"
         v-model="searchV"

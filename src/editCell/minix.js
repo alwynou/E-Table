@@ -3,16 +3,11 @@ export default {
         value_: [String, Number],
         column: Object,
         row: Object,
-        columnObj: Object
+        columnObj: Object 
     },
-    computed: {
-        value: {
-            get() {
-                return this.value_;
-            },
-            set(n) {
-                this.$emit('setValue', n)
-            }
+    data(){
+        return {
+            value:this.value_,
         }
-    }
+    },
 }

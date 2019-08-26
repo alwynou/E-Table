@@ -10,16 +10,11 @@ export default {
     row: Object,
     columnObj: Object
   },
-  computed: {
-    value: {
-      get() {
-        return this.value_;
-      },
-      set(n) {
-        this.$emit("setValue", n);
-      }
-    }
-  }
+  data() {
+    return {
+      value: this.value_
+    };
+  },
 };
 </script>
 
