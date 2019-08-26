@@ -5,6 +5,7 @@ function resolve(url) {
 }
 
 module.exports = {
+    publicPath:'./',
 
     lintOnSave: false,
 

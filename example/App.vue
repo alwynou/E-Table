@@ -46,7 +46,6 @@
 </template>
 
 <script>
-import ETable from "@/index.js";
 import req from "@utils/request.js";
 import customCellInput from "./components/customCellInput.vue";
 import { isFunction } from "@utils/index.js";
@@ -283,9 +282,6 @@ export default {
   mounted() {
     this.getData();
   },
-  components: {
-    ETable
-  }
 };
 </script>
 
