@@ -30,6 +30,7 @@
       height="100%"
       :getFilters="getFilters"
       @e-filter-change="eFilterChange"
+      @cell-value-change="cellValueChange"
       v-loading="loading"
     >
     <!-- el-table所有插槽功能依然保存-->
@@ -234,6 +235,9 @@ export default {
       this.filtedList = filtedList;
       console.log(value, column.property, filtedList);
       this.getData();
+    },
+    cellValueChange(v,row,column,columnObj){
+      console.log('change',v)
     },
     getData() {
       this.loading = true;
