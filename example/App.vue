@@ -59,6 +59,8 @@ export default {
         {
           prop: "name",
           label: "名字 [自定义内容]",
+          filters:['s','a'],
+          filter : true,
           width: 170,
           renderCell: (h, { value, row, column }) => {
             return h(
