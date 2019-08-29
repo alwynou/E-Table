@@ -26,7 +26,9 @@
   },
   "dependencies": {
     "element-ui": "^2.11.1",
-    "pinyin-match": "^1.0.9",
+    "pinyin-match": "^1.0.9"
+  },
+  "peerDependencies": {
     "vue": "^2.6.10"
   },
   "devDependencies": {
