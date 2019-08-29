@@ -4,7 +4,7 @@
   "description": "基于elementUI 封装的多功能table",
   "author": "lozvoe",
   "license": "MIT",
-  "main": "./lib/e-table.umd.min.js",
+  "main": "./lib/e-table.umd.js",
   "scripts": {
     "serve": "vue-cli-service serve",
     "dist": "vue-cli-service build --dest docs",
