@@ -70,7 +70,7 @@ export default function (props, h, col) { //custom table cell
             return h('span', {
                 domProps: {
                     innerHTML: (col.formatter && typeof col.formatter === 'function') ?
-                        col.formatter(row[col.prop]) : row[col.prop]
+                        col.formatter(row[col.prop], row, column) : row[col.prop]
                 }
             })
         }
