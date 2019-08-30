@@ -1,12 +1,44 @@
 # E-Table
 
->npm包还存在问题。无法使用
 
-基于Element UI 表格组件封装的，添加一些实用功能，如可自定义编辑单元格，自定义下拉筛选（可异步获取数据），快捷选中数据等功能。
+基于Element UI 表格组件封装的
+
+### 特点
+
+- 数据化表格结构
+- 自定义编辑单元格
+- 自定义下拉筛选
+- 快捷选择数据（支持快捷键`ctrl`和`shift/alt`）
+
+
+---
 
 ### 使用方式
 
+- 安装
 
+```
+npm install @lozvoe/e-table 
+
+npm install element-ui
+```
+
+- 引用
+
+```
+import Vue from "vue"
+import ElementUI from "element-ui"
+import ETable from "@lozvoe/e-table"
+
+import "element-ui/lib/theme-chalk/index.css" 
+import "@lozvoe/e-table/lib/e-table.css" 
+
+Vue.use(ElementUI)
+Vue.use(ETable)
+```
+
+
+- 简单例子
 
 ```html
 <template>
@@ -48,6 +80,38 @@ export default{
 </script>
 ```
 
+> 多级表头只需要嵌套使用即可， 如：
+
+```javascript
+ columns:[{
+              label:'日期',
+              childrens:[{
+                  prop:'year',
+                  label:"年份",
+                  width: 200
+              },{
+                  prop:'month',
+                  label:'月份',
+                  width:100
+              },{
+                  label:'时间',
+                  childrens:[{
+                      prop:'day',
+                      lable:'天',
+                      width:100
+                  }]
+              }]   
+          },{
+              prop:'name',
+              label:'姓名',
+              width:250
+          },{
+              prop:'address',
+              label:'地址',
+              width:250
+          }]    
+```
+
 
 这就是`e-table`的基本用法，可以看出来和`el-table`的区别就在于把`el-table-column`的插槽形式转化为了`columns`数组对象集合的形式。 所以他的书写格式只要把`el-table-column`上可配置项写成键值对插入到对应的`columns`数组对象中,就可以生效。所以这些属性就不一一列举, `el-table`上的属性一样可以直接写在`e-table`标签上。
 
@@ -57,14 +121,14 @@ export default{
 
 
 | 参数       | 说明                                                      | 类型     | 可选值           | 默认值 |
-| ---------- | --------------------------------------------------------- | -------- | ---------------- | ------ |
+|------------|-----------------------------------------------------------|----------|------------------|--------|
 | columns    | 所有列的对象集合数组                                      | Array    | -                | -      |
 | config     | 表格配置对象,可以对索引列,checkBox列是否可以筛选,进行控制 | Object   | 见config属性说明 | -      |
 | getFilters | 获取筛选数据的总控制中心，必须返回一个`resolve`的`Promis` | Function | -                | -      |
 
 #### `config`属性
 | 参数      | 说明                                                         | 类型           | 可选值     | 默认值 |
-| --------- | ------------------------------------------------------------ | -------------- | ---------- | ------ |
+|-----------|--------------------------------------------------------------|----------------|------------|--------|
 | index     | 控制显示索引列,当为Object时可以添加`el-table-column`中的属性 | Boolean/Object | -          | false  |
 | selection | 控制显示check多选列的显示                                    | Boolean/Object | -          | false  |
 | filter    | 控制所有列自定义筛选是否可用                                 | Boolean        | true/false | true   |
@@ -73,7 +137,7 @@ export default{
 
 
 | 事件名            | 说明                     | 参数                       |
-| ----------------- | ------------------------ | -------------------------- |
+|-------------------|--------------------------|----------------------------|
 | e-filter-change   | 筛选数据变化时触发       | value, column, filtedList  |
 | cell-value-change | 编辑单元格数据变化时触发 | value,row,column,columnObj |
 
@@ -83,7 +147,7 @@ export default{
 
 
 | 参数               | 说明                                                                                 | 类型       | 可选值                                | 默认值                 |
-| ------------------ | ------------------------------------------------------------------------------------ | ---------- | ------------------------------------- | ---------------------- |
+|--------------------|--------------------------------------------------------------------------------------|------------|---------------------------------------|------------------------|
 | defaultHeader      | 是否使用`el-table`默认列表头,如果要使用默认表头必须设为true                          | Boolean    | true/false                            | true                   |
 | filter             | 是否开启自定义筛选                                                                   | Boolean    | true/false                            | false                  |
 | filterType         | 内置下拉筛选类型                                                                     | String     | 'selection' / 'single' / 'datePicker' | 'selection'            |
