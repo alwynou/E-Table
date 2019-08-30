@@ -5,6 +5,7 @@
   "author": "lozvoe",
   "license": "MIT",
   "main": "lib/e-table.umd.js",
+  "private": false,
   "scripts": {
     "serve": "vue-cli-service serve",
     "dist": "vue-cli-service build --dest docs",

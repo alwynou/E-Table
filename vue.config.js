@@ -23,15 +23,15 @@ module.exports = {
             .set('@utils', resolve('src/utils'));
     },
 
-    configureWebpack: config => {
-        if (process.env.NODE_ENV === 'production') {
-            config.externals = {
-                'vue': 'Vue',
-                'axios': 'axios',
-                'element-ui': 'element-ui'
-            }
-        }
-    },
+    // configureWebpack: config => {
+    //     if (process.env.NODE_ENV === 'production') {
+    //         config.externals = {
+    //             'vue': 'Vue',
+    //             'axios': 'axios',
+    //             'element-ui': 'element-ui'
+    //         }
+    //     }
+    // },
 
     css: {
         loaderOptions: {
