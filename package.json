@@ -1,6 +1,6 @@
 {
   "name": "@lozvoe/e-table",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "基于elementUI 封装的多功能table",
   "author": "lozvoe",
   "license": "MIT",
