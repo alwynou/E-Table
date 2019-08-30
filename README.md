@@ -86,7 +86,6 @@ export default{
 | defaultHeader      | 是否使用`el-table`默认列表头,如果要使用默认表头必须设为true                          | Boolean    | true/false                            | true                   |
 | filter             | 是否开启自定义筛选                                                                   | Boolean    | true/false                            | false                  |
 | filterType         | 内置下拉筛选类型                                                                     | String     | 'selection' / 'single' / 'datePicker' | 'selection'            |
-|                    |
 | filterComponent    | 自定义下拉筛选组件（后面细讲用法）                                                   | Compontent | -                                     | -                      |
 | filterAttrs        | 筛选组件可接收的属性对象                                                             | Object     | -                                     | -                      |
 | filterListeners    | 筛选组件触发事件接受对象                                                             | Object     | -                                     | -                      |
