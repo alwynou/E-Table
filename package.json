@@ -26,6 +26,7 @@
     "url": "https://github.com/Lozvoe/E-Table"
   },
   "dependencies": {
+    "core-js": "^2.6.5",
     "element-ui": "^2.11.1",
     "pinyin-match": "^1.0.9"
   },
@@ -33,7 +34,6 @@
     "vue": "^2.6.10"
   },
   "devDependencies": {
-    "core-js": "^2.6.5",
     "axios": "^0.19.0",
     "mockjs": "^1.0.1-beta3",
     "@vue/cli-plugin-babel": "^3.11.0",

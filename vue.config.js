@@ -5,14 +5,11 @@ function resolve(url) {
 }
 
 module.exports = {
-    publicPath: './',
-
     lintOnSave: false,
-
     pages: {
         index: {
             entry: 'example/main.js',
-            template: process.env.NODE_ENV === 'production' ? 'public/build.html' : 'public/index.html',
+            template:'public/index.html',
             filename: 'index.html'
         }
     },
