@@ -1,7 +1,11 @@
 # E-Table
+
+
 基于Element UI 表格组件封装的，添加一些实用功能，如可自定义编辑单元格，自定义下拉筛选（可异步获取数据），快捷选中数据等功能。
 
 ### 使用方式
+
+
 
 ```html
 <template>
@@ -43,11 +47,14 @@ export default{
 </script>
 ```
 
+
 这就是`e-table`的基本用法，可以看出来和`el-table`的区别就在于把`el-table-column`的插槽形式转化为了`columns`数组对象集合的形式。 所以他的书写格式只要把`el-table-column`上可配置项写成键值对插入到对应的`columns`数组对象中,就可以生效。所以这些属性就不一一列举, `el-table`上的属性一样可以直接写在`e-table`标签上。
 
 
 当然也增加了一些属性，如下
 ### `e-table`增加属性
+
+
 | 参数       | 说明                                                      | 类型     | 可选值           | 默认值 |
 | ---------- | --------------------------------------------------------- | -------- | ---------------- | ------ |
 | columns    | 所有列的对象集合数组                                      | Array    | -                | -      |
@@ -62,6 +69,8 @@ export default{
 | filter    | 控制所有列自定义筛选是否可用                                 | Boolean        | true/false | true   |
 
 ### `e-table`增加事件
+
+
 | 事件名            | 说明                     | 参数                       |
 | ----------------- | ------------------------ | -------------------------- |
 | e-filter-change   | 筛选数据变化时触发       | value, column, filtedList  |
@@ -69,6 +78,8 @@ export default{
 
 
 ### `columns`中增加的属性
+
+
 
 | 参数               | 说明                                                                                 | 类型       | 可选值                                | 默认值                 |
 | ------------------ | ------------------------------------------------------------------------------------ | ---------- | ------------------------------------- | ---------------------- |
@@ -96,9 +107,12 @@ export default{
 
 ### slot 插槽
 
+
 同`el-table`的插槽
 
 ####  `filterComponent`具体使用
+
+
 ```javascript
 <script>
 import myComponent from "./myComponent.vue"
@@ -121,6 +135,8 @@ columns:[{
 ]
 </script>
 ```
+
+
  你可以自定义下拉组件，和内置下拉筛选组件一样接受如下`props`，也可以通过`filterAttrs`增加属性，`filterListeners`可以接受你组件的事件响应。
  
  - **filters**  ：通过`getfilters`传入的数据
@@ -142,6 +158,8 @@ columns:[{
  表格内部操作删除了筛选该列的数据时应做出响应，还有每次点击下拉筛选时应该保持数据一直，可以这样做（仅供参考）
 
 -  实时监听是否已被筛选，可以使用`computed`计算，列如：
+
+
 ```javascript
 computed: {
         isFilted() {
@@ -188,6 +206,8 @@ computed: {
 
 
 #### `editComponent`的具体使用
+
+
 
 > 示例参考`filterComponent`, 相对于`filterComponent`使用就简单许多了，同理，会接受如下`props`，也可以通过`editAttrs`增加属性，`editListeners`可以接受你组件的响应事件
 
