@@ -1,7 +1,11 @@
 import ETable from './e-table.js'
 
+const components = [ETable]
+
 const install = function (Vue) {
-    Vue.component(ETable.name, ETable)
+    components.map(component => {
+        Vue.component(component.name, component)
+    })
 }
 
 if (typeof window !== 'undefined' && window.Vue) {
