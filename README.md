@@ -125,7 +125,7 @@ export default{
 |------------|-----------------------------------------------------------|----------|------------------|--------|
 | columns    | 所有列的对象集合数组                                      | Array    | -                | -      |
 | config     | 表格配置对象,可以对索引列,checkBox列是否可以筛选,进行控制 | Object   | 见config属性说明 | -      |
-| getFilters | 获取筛选数据的总控制中心，必须返回一个`resolve`的`Promis` | Function | -                | -      |
+| getFilters | 获取筛选数据的总控制中心，必须返回一个`resolve`的`Promise` | Function | -                | -      |
 
 #### `config`属性
 | 参数      | 说明                                                         | 类型           | 可选值     | 默认值 |
@@ -149,7 +149,7 @@ export default{
 
 | 参数               | 说明                                                                                 | 类型       | 可选值                                | 默认值                 |
 |--------------------|--------------------------------------------------------------------------------------|------------|---------------------------------------|------------------------|
-| defaultHeader      | 是否使用`el-table`默认列表头,如果要使用默认表头必须设为true                          | Boolean    | true/false                            | true                   |
+| defaultHeader      | 是否使用`el-table`默认列表头,如果要使用默认表头必须设为true                          | Boolean    | true/false                            | false                   |
 | filter             | 是否开启自定义筛选                                                                   | Boolean    | true/false                            | false                  |
 | filterType         | 内置下拉筛选类型                                                                     | String     | 'selection' / 'single' / 'datePicker' | 'selection'            |
 | filterComponent    | 自定义下拉筛选组件（后面细讲用法）                                                   | Compontent | -                                     | -                      |
