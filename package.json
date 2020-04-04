@@ -28,7 +28,8 @@
   "dependencies": {
     "core-js": "^2.6.5",
     "element-ui": "^2.11.1",
-    "pinyin-match": "^1.0.9"
+    "pinyin-match": "^1.0.9",
+    "vue": "^2.6.11"
   },
   "peerDependencies": {
     "vue": "^2.6.10"

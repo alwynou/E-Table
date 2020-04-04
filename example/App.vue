@@ -33,14 +33,22 @@
       @cell-value-change="cellValueChange"
       v-loading="loading"
     >
-    <!-- el-table所有插槽功能依然保存-->
-    <el-table-column label="slot">
-      <template v-slot:default="{row}">
-        <el-tag size="small">
-          {{row.name}}
-        </el-tag>
+      <!-- el-table所有插槽功能依然保存-->
+      <el-table-column label="slot">
+        <template v-slot:default="{row}">
+          <el-tag size="small">{{row.name}}</el-tag>
+        </template>
+      </el-table-column>
+
+      <!-- append -->
+      <template v-slot:append>
+        <div class="append">table end append slot !</div>
       </template>
-    </el-table-column>
+
+      <!-- empty -->
+      <template v-slot:empty>
+        <div class="empty">custom empty !</div>
+      </template>
     </e-table>
   </div>
 </template>
@@ -59,14 +67,17 @@ export default {
         {
           prop: "name",
           label: "名字 [自定义内容]",
-          filters:['s','a'],
-          filter : true,
+          filters: ["s", "a"],
+          filter: true,
           width: 170,
           renderCell: (h, { value, row, column }) => {
             return h(
               "el-button",
               {
-                props: { size: "small", type: value.length>2?"success":'danger' },
+                props: {
+                  size: "small",
+                  type: value.length > 2 ? "success" : "danger"
+                },
                 on: {
                   click: e => {
                     console.log(e, value);
@@ -143,7 +154,7 @@ export default {
           editListeners: {
             //change 事件被覆盖为 cell-value-change 事件
             focus: event => {
-              console.log("cellEdit-change", event);
+              console.log("[editListeners] [focus event]", event);
             }
           }
         },
@@ -178,7 +189,7 @@ export default {
           width: 250,
           filter: true,
           edit: true,
-          editComponent: customCellInput, //自定义编辑组件
+          editComponent: customCellInput //自定义编辑组件
           // editAttrs: {
           //   //编辑表格绑定数据
           //   size: "mini"
@@ -237,8 +248,8 @@ export default {
       console.log(value, column.property, filtedList);
       this.getData();
     },
-    cellValueChange(v,row,column,columnObj){
-      console.log('change',v)
+    cellValueChange(v, row, column, columnObj) {
+      console.log("change", v);
     },
     getData() {
       this.loading = true;
@@ -283,7 +294,7 @@ export default {
 
   mounted() {
     this.getData();
-  },
+  }
 };
 </script>
 

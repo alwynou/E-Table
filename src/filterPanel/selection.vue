@@ -66,15 +66,13 @@ export default {
     },
 
     showPopverPanel() {
-      let colKey = this.column.columnKey||this.column.property || this.column.id
+      let colKey =
+        this.column.columnKey || this.column.property || this.column.id;
       if (
-        this.filtedList.hasOwnProperty(
-          colKey
-        ) &&
+        this.filtedList.hasOwnProperty(colKey) &&
         this.filtedList[colKey].value
       ) {
-        let value = this.filtedList[colKey]
-          .value;
+        let value = this.filtedList[colKey].value;
         if (value.length === 1 && value[0] === "fullSelect") {
           this.filted = this.filterValues;
           return;
@@ -86,7 +84,7 @@ export default {
     reInit() {
       this.filted = [];
     }
-  },
+  }
 };
 </script>
 
