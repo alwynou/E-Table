@@ -38,11 +38,16 @@ export default {
           },
         });
       } else {
-        if (Array.isArray(col.childrens) && col.childrens.length > 0) {
+        if (
+          col.hidden !== true &&
+          Array.isArray(col.childrens) &&
+          col.childrens.length > 0
+        ) {
           return h(
             "el-table-column",
             {
               attrs: {
+                ...col,
                 label: col.label || col.prop,
               },
             },
