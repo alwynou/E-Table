@@ -38,11 +38,8 @@ export default {
           },
         });
       } else {
-        if (
-          col.hidden !== true &&
-          Array.isArray(col.childrens) &&
-          col.childrens.length > 0
-        ) {
+        if (col.hidden === true) return null;
+        if (Array.isArray(col.childrens) && col.childrens.length > 0) {
           return h(
             "el-table-column",
             {
@@ -58,7 +55,7 @@ export default {
             ]
           );
         }
-        console.error(`[ETable warn] childrens need Array and can't be empty`);
+        console.error(`[ETable warn] childrens need Array`);
         return null;
       }
     };
