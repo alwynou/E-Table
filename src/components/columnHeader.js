@@ -2,9 +2,9 @@ import { hasOwn } from "@utils/index.js";
 
 export default function (props, h, col) {
   const _this = this;
-  let { column, $index } = props;
+  let { column } = props;
 
-  let colKey = column.columnKey || column.property || column.id;
+  let colKey = column.property;
 
   return h(
     "span",

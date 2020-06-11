@@ -22,15 +22,17 @@
     </div>
     <e-table
       ref="table"
+      :pagination="{total:100}"
       :data="tableData"
       :columns="columns"
       :config="config"
       stripe
       border
-      height="100%"
+      height="600px"
       :getFilters="getFilters"
       @e-filter-change="eFilterChange"
       @cell-value-change="cellValueChange"
+      @pagination-current-change="pageChange"
       v-loading="loading"
     >
       <!-- el-table所有插槽功能依然保存-->
@@ -243,6 +245,10 @@ export default {
     }
   },
   methods: {
+    pageChange(index) {
+      console.log("page index", index);
+      this.getData();
+    },
     eFilterChange(value, column, filtedList) {
       this.filtedList = filtedList;
       console.log(value, column.property, filtedList);
@@ -320,9 +326,9 @@ body {
   padding: 20px;
   display: flex;
   flex-direction: column;
-  .e-table {
-    flex: 1 1 auto;
-  }
+  // .e-table {
+  //   flex: 1 1 auto;
+  // }
   .nodata {
     display: flex;
     justify-content: center;

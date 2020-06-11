@@ -1,7 +1,7 @@
 export default {
   methods: {
     sortChange({ column, prop, order }) {
-      let colKey = column.columnKey || column.property || column.id;
+      let colKey = column.property;
       this.closeFilterPanel(colKey);
 
       this.editMap = [];
@@ -49,14 +49,6 @@ export default {
     window.addEventListener("keydown", this.keyDown, false);
     window.addEventListener("keyup", this.keyUp, false);
   },
-
-  updated() {
-    if (this.reLayoutTimer) clearTimeout(this.reLayoutTimer);
-    this.reLayoutTimer = setTimeout(() => {
-      //this.$refs.elTable ? this.$refs.elTable.doLayout() : null;
-    }, 100);
-  },
-
   beforeDestroy() {
     window.removeEventListener("keydown", this.keyDown);
     window.removeEventListener("keyup", this.keyUp);

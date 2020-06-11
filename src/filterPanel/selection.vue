@@ -32,7 +32,7 @@
 
 <script>
 import mixinFilter from "./minix.js";
-import pinyin from "pinyin-match";
+// import pinyin from "pinyin-match";
 export default {
   mixins: [mixinFilter],
   data() {
@@ -60,14 +60,13 @@ export default {
       if (this.timer) clearTimeout(this.timer);
       this.timer = setTimeout(() => {
         this.filterValues = this.filters.filter(f => {
-          return pinyin.match(f, value);
+          return f.indexOf(value) > -1;
         });
       }, 300);
     },
 
     showPopverPanel() {
-      let colKey =
-        this.column.columnKey || this.column.property || this.column.id;
+      let colKey = this.column.property;
       if (
         this.filtedList.hasOwnProperty(colKey) &&
         this.filtedList[colKey].value

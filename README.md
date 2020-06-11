@@ -45,7 +45,7 @@ Vue.use(ETable)
 <template>
     <e-table
       :data="tableData"
-      columns="tableColumns">
+      :columns="tableColumns">
    </e-table>
 </template>
 
@@ -116,16 +116,61 @@ export default{
 
 这就是`e-table`的基本用法，可以看出来和`el-table`的区别就在于把`el-table-column`的插槽形式转化为了`columns`数组对象集合的形式。 所以他的书写格式只要把`el-table-column`上可配置项写成键值对插入到对应的`columns`数组对象中,就可以生效。所以这些属性就不一一列举, `el-table`上的属性一样可以直接写在`e-table`标签上。
 
+- 分页例子
+```html
+<template>
+    <e-table
+      :data="tableData"
+      :pagination="paginationOpt"
+      :columns="tableColumns"
+      @pagination-current-change="pageChange"
+    >
+   </e-table>
+</template>
 
-当然也增加了一些属性，如下
-### `e-table`增加属性
+<script>
+export default{
+    data(){
+        return {
+            paginationOpt:{ total:100 },
 
+            tableData:[{
+            date: '2016-05-02',
+            name: '王小虎',
+            address: '上海市普陀区金沙江路 1518 弄'
+          }, {
+            date: '2016-05-04',
+            name: '王小虎',
+            address: '上海市普陀区金沙江路 1517 弄'
+          }],
+          columns:[{
+              prop:'date',
+              label:'日期',
+              width:250
+          },{
+              prop:'name',
+              label:'姓名',
+              width:250
+          },{
+              prop:'address',
+              label:'地址',
+              width:250
+          }]
+        }
+    }
+}
+</script>
+```
+
+
+### 增加了一些属性，如下
 
 | 参数       | 说明                                                      | 类型     | 可选值           | 默认值 |
 |------------|-----------------------------------------------------------|----------|------------------|--------|
 | columns    | 所有列的对象集合数组                                      | Array    | -                | -      |
 | config     | 表格配置对象,可以对索引列,checkBox列是否可以筛选,进行控制 | Object   | 见config属性说明 | -      |
 | getFilters | 获取筛选数据的总控制中心，必须返回一个`resolve`的`Promise` | Function | -                | -      |
+| pagination | 分页配置，同`ElPagination`配置 | Boolean/Object | -                | - |
 
 #### `config`属性
 | 参数      | 说明                                                         | 类型           | 可选值     | 默认值 |
@@ -134,13 +179,14 @@ export default{
 | selection | 控制显示check多选列的显示                                    | Boolean/Object | -          | false  |
 | filter    | 控制所有列自定义筛选是否可用                                 | Boolean        | true/false | true   |
 
-### `e-table`增加事件
+### 增加事件
 
 
 | 事件名            | 说明                     | 参数                       |
 |-------------------|--------------------------|----------------------------|
 | e-filter-change   | 筛选数据变化时触发       | value, column, filtedList  |
 | cell-value-change | 编辑单元格数据变化时触发 | value,row,column,columnObj |
+| pagination-${ElPaginationEventName} | 分页事件，以`'pagination-'`开头连接`ElPagination`的事件名称 | `ElPagination`事件参数 |
 
 
 ### `columns`中增加的属性
@@ -174,6 +220,7 @@ export default{
 
 
 同`el-table`的插槽
+
 
 ####  `filterComponent`具体使用
 
