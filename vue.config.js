@@ -6,6 +6,8 @@ function resolve(url) {
 
 const isDev = process.env.NODE_ENV === "development";
 
+console.log(isDev)
+
 module.exports = {
   publicPath: "./",
   lintOnSave: false,
