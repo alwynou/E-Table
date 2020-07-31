@@ -215,6 +215,7 @@ export default{
 | filterPlacement    | 下拉筛选出现相对位置                                                                 | String     | 同`el-popover`组件参数                | 'bottom'               |
 | filterVisibleArrow | 是否显示下拉筛选箭头                                                                 | Boolean    | true/false/                           | false                  |
 | hidden             | 控制是否显示该列                                                                     | Boolean    | true/false                            | false                  |
+| valueAsHtml             | 单元格显示字符是否作为html字符串解析                                                                     | Boolean    | true/false                            | false                  |
 
 ### slot 插槽
 

@@ -78,17 +78,17 @@ export default {
               {
                 props: {
                   size: "small",
-                  type: value.length > 2 ? "success" : "danger"
+                  type: value.length > 2 ? "success" : "danger",
                 },
                 on: {
-                  click: e => {
+                  click: (e) => {
                     console.log(e, value);
-                  }
-                }
+                  },
+                },
               },
               value
             );
-          }
+          },
         },
         {
           prop: "china",
@@ -108,16 +108,16 @@ export default {
                       return false;
                     }
                     return true;
-                  }
-                }
-              ]
+                  },
+                },
+              ],
             },
             {
               prop: "address",
               label: "地址",
-              width: 250
-            }
-          ]
+              width: 250,
+            },
+          ],
         },
         {
           prop: "datetime",
@@ -127,13 +127,13 @@ export default {
           filter: true,
           filterType: "datePicker",
           filterAttrs: {
-            "value-format": "yyyy/MM/dd"
+            "value-format": "yyyy/MM/dd",
           },
           filterListeners: {
-            change: e => {
+            change: (e) => {
               console.log("[Data filter change] filterValue:", e);
-            }
-          }
+            },
+          },
         },
         {
           prop: "email",
@@ -150,15 +150,15 @@ export default {
             options: [
               { value: "石家庄", label: "石家庄" },
               { value: "湖南", label: "湖南" },
-              { value: "北京", label: "北京" }
-            ]
+              { value: "北京", label: "北京" },
+            ],
           },
           editListeners: {
             //change 事件被覆盖为 cell-value-change 事件
-            focus: event => {
+            focus: (event) => {
               console.log("[editListeners] [focus event]", event);
-            }
-          }
+            },
+          },
         },
         {
           prop: "tel",
@@ -168,21 +168,22 @@ export default {
           filters: [
             { value: "1111", text: "136788" },
             { value: "232131", text: "2123213131" },
-            { value: "7332324", text: "123112321321" }
+            { value: "7332324", text: "123112321321" },
           ],
           // filterMultiple: false,
           filterPlacement: "bottom",
-          sortable: true
+          sortable: true,
         },
         {
           prop: "sex",
           label: "性别 [格式化显示]",
           width: 150,
-          formatter: v => {
+          valueAsHtml: true,
+          formatter: (v) => {
             return v
               ? "<span style='color:blue'>男</span>"
               : "<span style='color:red'>女</span>";
-          }
+          },
         },
 
         {
@@ -191,7 +192,7 @@ export default {
           width: 250,
           filter: true,
           edit: true,
-          editComponent: customCellInput //自定义编辑组件
+          editComponent: customCellInput, //自定义编辑组件
           // editAttrs: {
           //   //编辑表格绑定数据
           //   size: "mini"
@@ -207,32 +208,32 @@ export default {
         {
           prop: "bool",
           label: "布尔值",
-          width: 120
-        }
+          width: 120,
+        },
       ],
       config: {
         index: { align: "center" },
-        selection: true
+        selection: true,
         // filter:false,
         // scroll:true,
       },
-      getFilters: function(col, column) {
+      getFilters: function (col, column) {
         return new Promise((resolve, reject) => {
           let data = { column: col.prop };
           req({
             url: "/filter",
             method: "post",
-            data
+            data,
           })
-            .then(res => {
+            .then((res) => {
               resolve(res.data);
             })
-            .catch(error => {
+            .catch((error) => {
               reject(error);
             });
         });
       },
-      filtedList: {}
+      filtedList: {},
     };
   },
   computed: {
@@ -242,7 +243,7 @@ export default {
         fileds.push(this.filtedList[f]);
       }
       return fileds;
-    }
+    },
   },
   methods: {
     pageChange(index) {
@@ -261,19 +262,19 @@ export default {
       this.loading = true;
       let data = {
         pageIndex: 1,
-        pageSize: 100
+        pageSize: 100,
       };
       req({
         url: "/Getlist",
         method: "post",
-        data
-      }).then(res => {
+        data,
+      }).then((res) => {
         this.tableData = res.rows;
         this.loading = false;
       });
     },
     clearFilter(key) {
-      this.$refs.table.clearFiltedColumn(key, function(res) {
+      this.$refs.table.clearFiltedColumn(key, function (res) {
         console.log("clear-filter", res);
       });
       this.filtedList = this.$refs.table.filtedList;
@@ -295,12 +296,12 @@ export default {
       }
 
       return v;
-    }
+    },
   },
 
   mounted() {
     this.getData();
-  }
+  },
 };
 </script>
 

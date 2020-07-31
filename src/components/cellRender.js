@@ -15,17 +15,13 @@ export default function(props, h, col) {
 	let funControl = isFunction(col.editControl)
 			? col.editControl.call(null, row[col.prop], row, column)
 			: true,
-		isCan =
-			_this.tableConfig.cellEdit !== false && col.edit && funControl
-				? true
-				: false
+		isCan = _this.tableConfig.cellEdit !== false && col.edit && funControl
 
-	isCan
-		? _this.setEditMap({
-				x: row.rowIndex,
-				y: column.property,
-		  })
-		: null
+	isCan &&
+		_this.setEditMap({
+			x: row.rowIndex,
+			y: column.property,
+		})
 
 	if (
 		isCan &&
@@ -79,14 +75,20 @@ export default function(props, h, col) {
 			})
 		} else {
 			//default cell render
-			return h('span', {
-				domProps: {
-					innerHTML:
-						col.formatter && typeof col.formatter === 'function'
-							? col.formatter(row[col.prop], row, column)
-							: row[col.prop],
-				},
-			})
+			let value =
+				col.formatter && typeof col.formatter === 'function'
+					? col.formatter(row[col.prop], row, column)
+					: row[col.prop]
+			return h(
+				'span',
+				col.valueAsHtml
+					? {
+							domProps: {
+								innerHTML: value,
+							},
+					  }
+					: value
+			)
 		}
 	}
 }
